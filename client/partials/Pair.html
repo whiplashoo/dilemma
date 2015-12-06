@@ -1,0 +1,49 @@
+<template name="Pair">
+	<div class="row pair-info">
+		<div class="col-md-10">
+			<a class="user-link" href="{{pathForUser}}">
+				<img src="{{ fbPic }}" class="fbPic"/>
+				<h4 class="username"> {{username}} </h4>
+			</a>
+			<p> {{createdAt}} </p>
+		</div>
+		<div class="col-md-2">
+			{{#if ownPair}}
+			<a class="delete-pair">
+				<i class="fa fa-trash"></i>
+			</a>
+			{{/if}}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="pairImg row" id="left-img">
+				<img src="{{urlLeft}}" class="img img-responsive" />
+				<a href="{{urlLeft}}" target="_blank">Go to Image</a>
+			</div>
+			<div class="imgVotes row">
+				<i class="fa fa-thumbs-up faa-vertical" id="left-thumb"></i>
+				<p class="pull-right">{{ leftVotes}}</p>
+			</div>
+			<div class="imgVotedby row">
+				<p> Voted by: {{leftVotedBy}}</p>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<h1 class="dilemma-or" >OR </h1>
+		</div>
+		<div class="col-md-4">
+			<div class="pairImg row" id="right-img">
+				<img src="{{urlRight}}" class="img img-responsive" />
+				<a href="{{urlRight}}" target="_blank"> Go to Image</a>
+			</div>
+			<div class="imgVotes row">
+				<i class="fa fa-thumbs-up faa-vertical" id="right-thumb"></i>
+				<p class="pull-right">{{ rightVotes}}</p>
+			</div>
+			<div class="imgVotedby row">
+				<p> Voted by: {{rightVotedBy}}</p>
+			</div>			
+		</div>
+	</div>
+</template>
