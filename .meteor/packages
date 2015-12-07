@@ -22,7 +22,6 @@ fortawesome:fontawesome
 spiderable
 fastclick
 aldeed:collection2
-aldeed:autoform
 ian:accounts-ui-bootstrap-3
 accounts-password
 accounts-facebook
@@ -42,3 +41,5 @@ cfs:s3
 reactive-var
 cfs:ejson-file
 momentjs:moment
+service-configuration
+accounts-twitter

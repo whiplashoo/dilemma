@@ -1,11 +1,7 @@
 function voteImage(which, pairId) {
 	Meteor.call('voteImage',which, pairId);
 }
-function animate(thumb) {
-	if(!$(thumb).hasClass("animated")){
-		$(thumb).addClass("animated"); 
-	}
-}
+
 Template.Pair.helpers({
 	createdAt: function() {
 		return moment(this.createdAt).fromNow();
@@ -22,10 +18,29 @@ Template.Pair.helpers({
 		return path;
 	},
 	urlLeft: function() {
-		return Images.findOne({ _id: this.left}).url();
+		var img = Images.findOne({ _id: this.left});
+		console.log(img);
+		if (img)
+			return img.url();
 	},
 	urlRight: function() {
-		return Images.findOne({ _id: this.right}).url();
+		var img = Images.findOne({ _id: this.right});
+		if (img)
+			return img.url();
+	},
+	isLeftVoted: function() {
+		var username = Meteor.user().profile.name;
+		if (Pairs.findOne({_id: this._id}).leftVotedBy.indexOf(username) !== -1){
+			return 'animated';
+		}
+		return;
+	},
+	isRightVoted: function() {
+		var username = Meteor.user().profile.name;
+		if (Pairs.findOne({_id: this._id}).rightVotedBy.indexOf(username) !== -1){
+			return 'animated';
+		}
+		return;
 	}
 });
 
@@ -44,22 +59,10 @@ Template.Pair.events({
 			})
 		}
 	},
-	'dblclick #left-img': function(e) {
-		var thumb = $(e.target).parent().siblings('.imgVotes').children('i');
-		animate(thumb);
+	'dblclick .left-img, click .left-thumb': function(e) {
 		voteImage('left', this._id);
 	},
-	'dblclick #right-img': function(e) {
-		var thumb = $(e.target).parent().siblings('.imgVotes').children('i');
-		animate(thumb);
-		voteImage('right', this._id);
-	},
-	'click #left-thumb': function(e) {
-		animate(e.target);
-		voteImage('left', this._id);
-	},
-	'click #right-thumb': function(e) {
-		animate(e.target);
+	'dblclick .right-img, click .right-thumb': function(e) {
 		voteImage('right', this._id);
 	}
 });

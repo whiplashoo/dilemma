@@ -29,10 +29,15 @@
               <li><a href="#">One more separated link</a></li>
             </ul>
           </li>
-          <img src="{{ fbPic }}" class="fbPic"/>
+          <img src="{{ profPic }}" class="profPic"/>
           {{> loginButtons}}
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
+</template>
+
+<template name="_loginButtonsAdditionalLoggedInDropdownActions">
+    <input type="file" name="" id="set-profile-picture">
+    <button class="btn btn-info" id="upload-profile-picture"> Upload </button>
 </template>
