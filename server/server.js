@@ -12,11 +12,13 @@ var getFbPicture = function(accessToken) { // make async call to grab the pictur
     return result.data.picture.data.url; // return the picture's url
 };
 
-// The user profile holds:
-//		a. A username.
-//		b. If he logged in with FB, Twitter, etc. his profile picture's URL.
-//		c. If he logged in natively and set a prof pic, his prof pic's ID in order
-//		   to be able to fetch it from the AWS database.
+/****************************************************** 
+**	The user profile holds:
+**  a. A username.
+**	b. If he logged in with FB, Twitter, etc. his profile picture's URL.
+**	c. If he logged in natively and set a prof pic, his prof pic's ID in order
+**	   to be able to fetch it from the AWS database.
+******************************************************/
 Accounts.onCreateUser(function(options, user) {
 	
 	if (user.services.facebook) {
@@ -73,3 +75,24 @@ createServiceConfiguration('facebook', Meteor.settings.private.FBid, Meteor.sett
 createServiceConfiguration('google', Meteor.settings.private.GOid, Meteor.settings.private.GOsecret);
 createServiceConfiguration('twitter', Meteor.settings.private.TWid, Meteor.settings.private.TWsecret);
 
+Meteor.startup(function(){
+	
+	// Pairs.find().forEach(function(doc){
+	// 	var id = doc.userId;
+	// 	var userProfile = Meteor.users.findOne({_id:id}).profile;
+	// 	var profPicURL;
+	// 	if (userProfile.pictureById) { 
+	// 		var imgId = userProfile.pictureById;
+	// 		var img = ProfilePics.findOne({ _id: imgId });
+	// 		if (img)
+	// 			profPicURL = img.url();
+	// 	}
+	// 	else if (userProfile.picture) {
+	// 		profPicURL = userProfile.picture;
+	// 	}
+	// 	else {
+	// 		profPicURL = "/default.jpg";
+	// 	}
+	// 	Pairs.update({ _id: doc._id}, { $set: {userProfilePic:profPicURL}});
+	// })
+});

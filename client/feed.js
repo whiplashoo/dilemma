@@ -1,4 +1,4 @@
-Template.Dilemmas.created = function() {
+Template.Feed.created = function() {
   var self = this;
 
   self.limit = new ReactiveVar;
@@ -7,8 +7,8 @@ Template.Dilemmas.created = function() {
 
   self.autorun(function() {
     var limit = self.limit.get();
-    var subscription = self.subscribe('pairs', limit);
-    self.subscribe('images', limit * 2);
+    var subscription = self.subscribe('feedpairs', limit);
+    self.subscribe('feedimages', limit * 2);
     if (subscription.ready()){
       self.loaded.set(limit);
     }
@@ -22,7 +22,7 @@ Template.Dilemmas.created = function() {
   }
 }
 
-Template.Dilemmas.helpers({
+Template.Feed.helpers({
   pairs: function () {
     return Template.instance().pairs();
   },
@@ -32,7 +32,7 @@ Template.Dilemmas.helpers({
   }
 });
 
-Template.Dilemmas.events({
+Template.Feed.events({
   'click .load-more': function (event, instance) {
     event.preventDefault();
 

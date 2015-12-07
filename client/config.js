@@ -14,7 +14,8 @@ Template.registerHelper("profPic", function() {
 		if (userProfile.pictureById) { 
 			var imgId = userProfile.pictureById;
 			var img = ProfilePics.findOne({ _id: imgId });
-			return img.url();
+			if (img)
+				return img.url();
 		}
 		// if user logged in with external services.
 		else {
@@ -40,5 +41,13 @@ Template._loginButtonsLoggedInDropdown.events({
 			Meteor.subscribe('profilePics');
 
 		});
+	}
+});
+
+Template._loginButtonsAdditionalLoggedInDropdownActions.helpers({
+	isLoggedInNatively : function() {
+		var userProfile = Meteor.user().profile;
+		console.log(userProfile.picture);
+		return userProfile.picture === undefined;
 	}
 });

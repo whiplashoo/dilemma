@@ -19,7 +19,6 @@ Template.Pair.helpers({
 	},
 	urlLeft: function() {
 		var img = Images.findOne({ _id: this.left});
-		console.log(img);
 		if (img)
 			return img.url();
 	},
@@ -41,6 +40,9 @@ Template.Pair.helpers({
 			return 'animated';
 		}
 		return;
+	},
+	pairProfPic: function() {
+		console.log(this.userId); 
 	}
 });
 
