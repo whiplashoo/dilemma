@@ -39,7 +39,8 @@
 
 <template name="_loginButtonsAdditionalLoggedInDropdownActions">
   {{#if isLoggedInNatively}}
-  <input type="file" name="" id="set-profile-picture">
-  <button class="btn btn-info" id="upload-profile-picture"> Upload </button>
+  <span class="btn btn-info btn-file"> Change profile picture...
+    <input type="file" name="" id="set-profile-picture">
+  </span>
   {{/if}}
 </template>

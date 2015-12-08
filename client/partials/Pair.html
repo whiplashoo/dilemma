@@ -1,49 +1,69 @@
 <template name="Pair">
-	<div class="row pair-info">
-		<div class="col-md-10">
-			<a class="user-link" href="{{pathForUser}}">
-				<img src="{{ userProfilePic }}" class="profPic"/>
-				<h4 class="username"> {{username}} </h4>
-			</a>
-			<p> {{createdAt}} </p>
-		</div>
-		<div class="col-md-2">
-			{{#if ownPair}}
-			<a class="delete-pair">
-				<i class="fa fa-trash"></i>
-			</a>
-			{{/if}}
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-4 left-img-div">
-			<div class="pairImg row left-img">
-				<img src="{{urlLeft}}" class="img img-responsive" />
-				<a href="{{urlLeft}}" target="_blank">Go to Image</a>
+	<div class="pair row">
+		<div class="pair-info row">
+			<div class="col-md-10">
+				<a class="user-link" href="{{pathForUser}}">
+					<img src="{{ userProfilePic }}" class="profPic"/>
+					<h4 class="username"> {{username}} </h4>
+				</a>
+				<p> {{createdAt}} </p>
 			</div>
-			<div class="imgVotes row">
+			<div class="col-md-2">
+				{{#if ownPair}}
+				<a class="delete-pair">
+					<i class="fa fa-trash"></i>
+				</a>
+				{{/if}}
+			</div>
+		</div>
+		<div class="pair-images row">
+			<div class="col-md-5 left-img-div">
+				<div class="pair-img left-img">
+					<img src="{{urlLeft}}" class="img img-responsive" />
+				</div>
+			</div>
+			<div class="col-md-2">
+				<h1 class="dilemma-or" >OR </h1>
+			</div>
+			<div class="col-md-5 right-img-div">
+				<div class="pair-img right-img">
+					<img src="{{urlRight}}" class="img img-responsive" />
+				</div>	
+			</div>
+		</div>
+		<div class="pair-votes row">
+			<div class="col-md-5 imgVotes">
+				<a href="{{urlLeft}}" target="_blank" class="btn btn-info pull-left">Go to Image</a>
 				<i class="fa fa-thumbs-up faa-vertical {{isLeftVoted}} left-thumb"></i>
-				<p class="pull-right">{{ leftVotes}}</p>
+				<p class="votes pull-right">{{ leftVotes}}</p>
 			</div>
-			<div class="imgVotedby row">
-				<p> Voted by: {{leftVotedBy}}</p>
+			<div class="col-md-2 bolt">
+				<i class="fa fa-bolt"></i>
 			</div>
-		</div>
-		<div class="col-md-4">
-			<h1 class="dilemma-or" >OR </h1>
-		</div>
-		<div class="col-md-4 right-img-div">
-			<div class="pairImg row right-img">
-				<img src="{{urlRight}}" class="img img-responsive" />
-				<a href="{{urlRight}}" target="_blank"> Go to Image</a>
-			</div>
-			<div class="imgVotes row">
+			<div class="col-md-5 imgVotes">
+				<p class="votes pull-left">{{ rightVotes}}</p>
 				<i class="fa fa-thumbs-up faa-vertical {{isRightVoted}} right-thumb"></i>
-				<p class="pull-right">{{ rightVotes}}</p>
+				<a href="{{urlRight}}" target="_blank" class="btn btn-info pull-right"> Go to Image</a>
 			</div>
-			<div class="imgVotedby row">
-				<p> Voted by: {{rightVotedBy}}</p>
-			</div>			
+		</div>
+		<div class="pair-votedBy row">
+			<div class="col-md-5">
+				<p> Voted by: 
+					{{#each leftVotedBy}}
+					<a href="{{pathForVoter this}}"> {{this}} </a>
+					{{/each}}
+				</p>
+			</div>
+			<div class="col-md-2">
+
+			</div>
+			<div class="col-md-5">
+				<p> Voted by: 
+					{{#each rightVotedBy}}
+					<a href="{{pathForVoter this}}"> {{this}} </a>
+					{{/each}}
+				</p>	
+			</div>
 		</div>
 	</div>
 </template>

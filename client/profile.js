@@ -7,8 +7,9 @@ Template.Profile.created = function() {
 
   self.autorun(function() {
     var limit = self.limit.get();
-    var subscription = self.subscribe('pairs', limit);
-    self.subscribe('images', limit * 2);
+    var who = FlowRouter.getParam('username');
+    var subscription = self.subscribe('pairs', limit, who);
+    self.subscribe('images', limit * 2, who);
     if (subscription.ready()){
       self.loaded.set(limit);
     }
@@ -29,6 +30,11 @@ Template.Profile.helpers({
   // are there more pairs to show?
   hasMorePosts: function () {
     return Template.instance().pairs().count() >= Template.instance().limit.get();
+  },
+  ownPage: function() {
+    var who = FlowRouter.getParam('username');
+    if (Meteor.user().profile)
+      return who === Meteor.user().profile.name || who === undefined;
   }
 });
 

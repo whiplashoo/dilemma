@@ -17,6 +17,13 @@ Template.Pair.helpers({
 
 		return path;
 	},
+	pathForVoter: function(voterUsername) {
+		var params = {  username : voterUsername};
+		var routeName = "userPage";
+		var path = FlowRouter.path(routeName, params);
+
+		return path;
+	},
 	urlLeft: function() {
 		var img = Images.findOne({ _id: this.left});
 		if (img)
@@ -40,9 +47,6 @@ Template.Pair.helpers({
 			return 'animated';
 		}
 		return;
-	},
-	pairProfPic: function() {
-		console.log(this.userId); 
 	}
 });
 

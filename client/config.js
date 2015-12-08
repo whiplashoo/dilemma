@@ -47,7 +47,6 @@ Template._loginButtonsLoggedInDropdown.events({
 Template._loginButtonsAdditionalLoggedInDropdownActions.helpers({
 	isLoggedInNatively : function() {
 		var userProfile = Meteor.user().profile;
-		console.log(userProfile.picture);
 		return userProfile.picture === undefined;
 	}
 });

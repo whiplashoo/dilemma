@@ -1,7 +1,17 @@
-Meteor.publish('images', function(limit) {
+Meteor.publish('images', function(limit, who) {
 	check(limit, Number);
-	if (this.userId) {
-		return Images.find({ userId : this.userId }, {
+	if (who)
+		check(who, String);
+	var userId;
+	// Check if user wants to see their own profile or another user's profile
+	if (who) {
+		userId = Meteor.users.findOne({"profile.name": who})._id;
+	}
+	else {
+		userId = this.userId;
+	}
+	if (userId) {
+		return Images.find({ userId : userId }, {
 			limit: limit,
 			sort: { uploadedAt: -1 }
 		});
@@ -9,10 +19,20 @@ Meteor.publish('images', function(limit) {
 	return this.ready();
 });
 
-Meteor.publish('pairs', function(limit) {
+Meteor.publish('pairs', function(limit, who) {
 	check(limit, Number);
-	if (this.userId) {
-		return Pairs.find({ userId : this.userId }, {
+	if (who)
+		check(who, String);
+	var userId;
+	// Check if user wants to see their own profile or another user's profile
+	if (who) {
+		userId = Meteor.users.findOne({"profile.name": who})._id;
+	}
+	else {
+		userId = this.userId;
+	}
+	if (userId) {
+		return Pairs.find({ userId : userId }, {
 			limit: limit,
 			sort: { createdAt: -1 }
 		});
