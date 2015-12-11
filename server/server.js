@@ -24,14 +24,17 @@ Accounts.onCreateUser(function(options, user) {
 	if (user.services.facebook) {
 		options.profile.picture = getFbPicture(user.services.facebook.accessToken);
     	user.profile = options.profile; // We still want the default 'profile' behavior.
+    	user.username = user.profile.name;
     }
     else if (user.services.twitter){
     	options.profile.picture = user.services.twitter.profile_image_url;
     	user.profile = options.profile;
+    	user.username = user.profile.name;
     }
     else if (user.services.google){
     	options.profile.picture = user.services.google.picture;
     	user.profile = options.profile;
+    	user.username = user.profile.name;
     }
     else {
     	user.profile = {};

@@ -43,4 +43,4 @@ cfs:ejson-file
 momentjs:moment
 service-configuration
 accounts-twitter
-mrt:fancybox
+arkham:comments-ui

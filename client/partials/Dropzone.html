@@ -1,12 +1,14 @@
 <template name="Dropzone">
-	<div class="row">
+	<div class="row dropzone-cont">
 		<div class="col-md-4">
 			<div id="dropzone-left" class="dropzone">
 				<div class="well well-drop-zone">
 					Drop file(s) here to upload
 				</div>
 			</div>
-			<input type="file" name="" id="inp1">
+			<span class="btn btn-info upload-button-wrap"> Upload first image...
+				<input type="file" name="" class="upload-button" id="inp1">
+			</span>
 		</div>
 		<div class="col-md-4">
 			<button class="btn btn-info" id="upload"> Upload </button>
@@ -17,7 +19,9 @@
 					Drop file(s) here to upload
 				</div>
 			</div>
-			<input type="file" name="" id="inp2">
+			<span class="btn btn-info upload-button-wrap"> Upload second image...
+				<input type="file" name="" class="upload-button" id="inp2">
+			</span>
 		</div>
 	</div>
 </template>

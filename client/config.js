@@ -2,6 +2,11 @@ Accounts.ui.config({
 	passwordSignupFields: 'USERNAME_ONLY'
 });
 
+// On the Client
+Comments.ui.config({
+   template: 'bootstrap' // or ionic, semantic-ui
+});
+
 // We subscribe initially here for the profile pics, but when a user updates
 // we need to check the subscription again. Check the update profile pic function.
 // TODO: Make this reactive somehow.

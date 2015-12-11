@@ -7,7 +7,8 @@ Template.Pair.helpers({
 		return moment(this.createdAt).fromNow();
 	},
 	ownPair: function() {
-		return this.userId === Meteor.userId();
+		if (Meteor.user())
+			return this.userId === Meteor.userId();
 	},
 	pathForUser: function() {
 		var pair = this;
@@ -35,18 +36,26 @@ Template.Pair.helpers({
 			return img.url();
 	},
 	isLeftVoted: function() {
-		var username = Meteor.user().profile.name;
+		if (Meteor.user().profile)
+			var username = Meteor.user().profile.name;
 		if (Pairs.findOne({_id: this._id}).leftVotedBy.indexOf(username) !== -1){
 			return 'animated';
 		}
 		return;
 	},
 	isRightVoted: function() {
-		var username = Meteor.user().profile.name;
+		if (Meteor.user().profile)
+			var username = Meteor.user().profile.name;
 		if (Pairs.findOne({_id: this._id}).rightVotedBy.indexOf(username) !== -1){
 			return 'animated';
 		}
 		return;
+	},
+	following: function() {
+		if (Meteor.user().profile) {
+			return Meteor.user().profile.following.indexOf(this.userId) !== -1;		
+		}
+
 	}
 });
 
@@ -70,5 +79,29 @@ Template.Pair.events({
 	},
 	'dblclick .right-img, click .right-thumb': function(e) {
 		voteImage('right', this._id);
+	},
+	'click .follow': function(e) {
+		var pairToFollow = this._id;
+		Meteor.call('follow', pairToFollow, function(error,result){
+			if (error) {
+				toastr.error("Something went wrong..." + error);
+			}
+			else {
+				$(e.target).removeClass('follow').addClass('unfollow').html('Unfollow');
+				toastr.success('Followed!');
+			}
+		});
+	},
+	'click .unfollow': function(e) {
+		var pairToUnfollow = this._id;
+		Meteor.call('unfollow', pairToUnfollow, function(error,result){
+			if (error) {
+				toastr.error("Something went wrong..." + error);
+			}
+			else {
+				$(e.target).removeClass('unfollow').addClass('follow').html('Follow');
+				toastr.success('Unfollowed!');
+			}
+		});
 	}
 });

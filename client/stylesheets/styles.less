@@ -1,5 +1,8 @@
 .grey-border {
-    border: 1px solid #ddd;
+  border: 1px solid #ddd;
+}
+.dropzone-cont {
+  padding:2em;
 }
 .pair-info {
   .grey-border;
@@ -33,13 +36,19 @@
 .delete-pair {
   cursor: pointer;
   font-size:3em;
+  &:hover {
+    text-decoration: none;
+  }
   .fa-trash {
     float:right;
+    color: grey;
+    opacity: 0.4;
+    &:hover {
+      color:red;
+    }
   }
 }
-.delete-pair:hover {
-  text-decoration: none;
-}
+
 .pair {
   .grey-border;
   padding: 0 1em;
@@ -76,18 +85,22 @@
   width: 50px;
   height: 50px;
 }
+.profPic-thumb {
+  .profPic;
+
+}
 .dilemma-or {
   text-align: center;
   font-weight: 700;
   font-size: 6em;
 }
 
-.btn-file {
+.upload-button-wrap {
   position: relative;
   overflow: hidden;
 }
-#login-dropdown-list input{
-  position: absolute;
+.upload-button {
+  position: absolute !important;
   top: 0;
   right: 0;
   min-width: 100%;
