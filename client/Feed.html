@@ -1,4 +1,12 @@
 <template name="Feed">
+	<div class="row">
+		<div class="col-md-6 tab-container-left">
+			<button class="tab cbtn" id="public-feed"> Public </button>
+		</div>
+		<div class="col-md-6 tab-container-right">
+			<button class="tab cbtn" id="following-feed"> People you Follow</button>
+		</div>
+	</div>
 	<section class="dilemmas">
 		{{#each pairs}}
 		{{> Pair}}
@@ -11,7 +19,7 @@
 	<a class="load-more" href="#">Load More</a>
 	{{/if}}
 	{{else}}
-	<div class="loading">{{>loader}}</div>
+	<div class="loading">{{>spinner}}</div>
 	{{/if}}
 
 </template>

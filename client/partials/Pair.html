@@ -1,79 +1,133 @@
 <template name="Pair">
 	<div class="pair row">
-		<div class="pair-info row">
-			<div class="col-md-10">
-				<a class="user-link" href="{{pathForUser}}">
-					<img src="{{ userProfilePic }}" class="profPic"/>
-					<h4 class="username"> {{username}} </h4>
-				</a>
-				<p> {{createdAt}} </p>
-				{{#unless ownPair}}
-				{{#if following}}
-				<button class="btn btn-primary unfollow"> Unfollow </button>
-				{{else}}
-				<button class="btn btn-primary follow"> Follow </button>
-				{{/if}}
-				{{/unless}}
+		<div class="pair-header row">
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<a class="user-link" href="{{pathForUser}}">
+						<img src="{{ userProfilePic }}" class="profPic"/>
+					</a>
+				</div>
+				<div class="col-md-10 col-sm-10 col-xs-10">
+					<a class="user-link" href="{{pathForUser}}">
+						<h4 class="username"> {{username}} </h4>
+					</a>
+					<p> {{createdAt}} </p>
+				</div>	
 			</div>
-			<div class="col-md-2">
-				{{#if ownPair}}
-				<a class="delete-pair">
-					<i class="fa fa-trash"></i>
-				</a>
-				{{/if}}
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<h3 class="question"> {{question}} </h3>
+			</div>
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="btn-toolbar pair-buttons">
+					<div class="btn-group">
+						{{#unless profilePage}}
+						{{#unless ownPair}}
+						{{#if following}}
+						<a class="btn cbtn cbtn-normal cbtn-red unfollow"> Unfollow </a>
+						{{else}}
+						<a class="btn cbtn cbtn-normal cbtn-green follow"> Follow </a>
+						{{/if}}
+						{{/unless}}
+						{{/unless}}
+					</div>
+					<div class="btn-group">
+						{{> Social}}
+					</div>
+					<div class="pair-options btn-group">
+						<button type="button" class="cbtn cbtn-black dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i><span class="caret"></span></button>
+						<ul class="dropdown-menu pull-right">
+							<li class="get-direct-link" data-toggle="modal" data-target="#directLinkModal"><a href="">Get Direct Link </a></li>
+							<li><a href="#">Report</a></li>
+						</ul>
+					</div>
+					{{#if ownPair}}
+					<div class="btn-group">
+						<button class="delete-pair btn cbtn cbtn-red" data-toggle="modal" data-target="#deleteModal">
+							<i class="fa fa-trash"></i>
+						</button>
+					</div>
+					{{/if}}
+					
+				</div>
 			</div>
 		</div>
 		<div class="pair-images row">
 			<div class="col-md-5 left-img-div">
-				<div class="pair-img left-img">
+				<div class="pair-img left-img row">
 					<img src="{{urlLeft}}" class="img img-responsive" />
+				</div>
+				<div class="pair-votes row">
+					<a href="{{urlLeft}}" target="_blank" class="cbtn cbtn-normal cbtn-black pull-left">Go to Image</a>
+					<i class="fa fa-thumbs-up faa-vertical {{isLeftVoted}} left-thumb"></i>
+					<p class="votes pull-right">{{ leftVotes}}</p>
+				</div>
+				<div class="pair-votedBy row">
+					<p class="voters-list"> Voted by: 
+						{{> UnwrapUsers leftVotedBy}} 
+					</p>
 				</div>
 			</div>
 			<div class="col-md-2">
 				<h1 class="dilemma-or" >OR </h1>
 			</div>
 			<div class="col-md-5 right-img-div">
-				<div class="pair-img right-img">
+				<div class="pair-img right-img row">
 					<img src="{{urlRight}}" class="img img-responsive" />
+				</div>
+				<div class="pair-votes row">
+					<p class="votes pull-left">{{ rightVotes}}</p>
+					<i class="fa fa-thumbs-up faa-vertical {{isRightVoted}} right-thumb"></i>
+					<a href="{{urlRight}}" target="_blank" class="cbtn cbtn-normal cbtn-black pull-right"> Go to Image</a>
 				</div>	
+				<div class="pair-votedBy row">
+					<p class="voters-list"> Voted by:  
+						{{> UnwrapUsers rightVotedBy}}
+					</p>	
+				</div>
 			</div>
 		</div>
-		<div class="pair-votes row">
-			<div class="col-md-5 imgVotes">
-				<a href="{{urlLeft}}" target="_blank" class="btn btn-info pull-left">Go to Image</a>
-				<i class="fa fa-thumbs-up faa-vertical {{isLeftVoted}} left-thumb"></i>
-				<p class="votes pull-right">{{ leftVotes}}</p>
-			</div>
-			<div class="col-md-2 bolt">
-				<i class="fa fa-bolt"></i>
-			</div>
-			<div class="col-md-5 imgVotes">
-				<p class="votes pull-left">{{ rightVotes}}</p>
-				<i class="fa fa-thumbs-up faa-vertical {{isRightVoted}} right-thumb"></i>
-				<a href="{{urlRight}}" target="_blank" class="btn btn-info pull-right"> Go to Image</a>
-			</div>
-		</div>
-		<div class="pair-votedBy row">
-			<div class="col-md-5">
-				<p> Voted by: 
-					{{#each leftVotedBy}}
-					<a class="voter" href="{{pathForVoter this}}"> {{this}} </a>
-					{{/each}}
-				</p>
-			</div>
-			<div class="col-md-2">
-
-			</div>
-			<div class="col-md-5">
-				<p> Voted by: 
-					{{#each rightVotedBy}}
-					<a class="voter" href="{{pathForVoter this}}"> {{this}} </a>
-					{{/each}}
-				</p>	
-			</div>
-		</div>
-		<div class="comment-section">
-			{{> commentsBox id=_id}}
+		
+		<div class="comment-section row">
+			{{> commentsBox id=_id customTemplate="myComments"}}
 		</div>
 	</div>
+	<div class="modal" id="directLinkModal"> 
+		<div class="modal-dialog"> 
+			<div class="modal-content"> 
+				<div class="modal-header"> 
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+					<h4 class="modal-title">Copy Link to this Dilemma</h4>
+				</div> 
+				<div class="modal-body">
+					<textarea class="form-control direct-link-area" readonly></textarea>
+				</div> 
+			</div>
+		</div> 
+	</div> 
+	<div class="modal fade" id="deleteModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title">Delete Dilemma</h3>
+				</div>
+				<div class="modal-body">
+					<h4>Are you sure?</h4>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="cbtn ctbn-normal cbtn-red" id="deleteThePair" data-dismiss="modal">Yes, delete it.</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<template name="Social">
+	<!-- Facebook -->
+	<a href="https://www.facebook.com/sharer/sharer.php?u={{currentURL}}" title="Share on Facebook" target="_blank" class="btn cbtn cbtn-black"><i class="fa fa-facebook"></i></a>
+	<!-- Twitter -->
+	<a href="http://twitter.com/home?status=Help me in this dilemma: {{currentURL}}" title="Share on Twitter" target="_blank" class="btn cbtn cbtn-black"><i class="fa fa-twitter"></i></a>
+	<!-- Pinterest -->
+	<a href="https://www.pinterest.com/pin/create/button/" title="Share on Pinterest" data-pin-do="buttonBookmark" data-pin-custom="true" class="btn cbtn cbtn-black"><i class="fa fa-pinterest"></i></a>
+
 </template>

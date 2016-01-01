@@ -1,37 +1,105 @@
 <template name="Profile">
-	<section class="dilemmas">
-		{{#if ownPage}}
-		<h1> Uploaded by me</h1>
-		{{/if}}
-		
+	{{#with profileOwner}}
+	{{#with profile}}
+	<section class="profile row">
+		<div class="col-md-3">
+			<img src="{{ largeProfPic }}" class="profPic-large"/>
+		</div>
+		<div class="col-md-5">
+			
+			<h1 class="profName"> {{name}} </h1>
+			<p class="joinedAt"> Joined {{joinedAt}}</p>
+			<h4 id="profSlogan"> 
+				{{getSlogan}} 
+				{{#if ownPage}}
+				<button class="cbtn cbtn-black editSlogan" title="Edit"> <i class="fa fa-pencil"></i></button> 
+				{{/if}}
+			</h4>
+			{{#if ownPage}}
+			<div class="input-group" id="editSloganDiv">
+				<input type="text" id="sloganInput" class="form-control" aria-label="...">
+				<div class="input-group-btn">
+					<button type="button" id="cancelSlogan" class="btn btn-default">Cancel</button>
+					<button type="button" id="submitSlogan" class="btn cbtn cbtn-action">Submit</button>
+				</div>
+			</div>
+			{{/if}}
+
+			{{#unless ownPage}}
+			{{#if following}}
+			<button class="cbtn cbtn-normal cbtn-red unfollow"> Unfollow </button>
+			{{else}}
+			<button class="cbtn cbtn-normal cbtn-green follow"> Follow </button>
+			{{/if}}
+			{{/unless}}
+		</div>
+		<div class="col-md-4">
+			<div class="row connections">
+				<h3> Followers: {{Nfollowers}} </h3>
+				<button type="button" class="cbtn cbtn-normal cbtn-black" data-toggle="modal" data-target="#followersModal">See all</button>
+			</div>
+			<div class="row connections">
+				<h3> Following: {{Nfollowing}} </h3>
+				<button type="button" class="cbtn cbtn-normal cbtn-black" data-toggle="modal" data-target="#followingModal">See all</button>
+			</div>
+			<h3 class="profPairCounts"> Uploaded Dillemas: {{ Npairs}}</h3>
+		</div>
+	</section>
+	<section class="row">
+		<h2> Uploaded by {{name}}</h2>
+	</section>
+	<section class="dilemmas row">
 		{{#each pairs}}
 		{{> Pair}}
 		{{else}}
 		<h2 class="no-pairs"> Start by uploading your first dilemma! </h2>
 		{{/each}}
+		{{#if Template.subscriptionsReady}}
+		{{#if hasMorePosts}}
+		<a class="load-more" href="#">Load More</a>
+		{{/if}}
+		{{else}}
+		<div class="loading">{{>spinner}}</div>
+		{{/if}}
+		<div class="modal" id="followersModal"> 
+			<div class="modal-dialog modal-sm" style="overflow-y: scroll; max-height:85%;  margin-top: 50px; margin-bottom:50px;"> 
+				<div class="modal-content"> 
+					<div class="modal-header"> 
+						<h3 class="modal-title">Followers</h3> 
+					</div> 
+					<div class="modal-body" style="height:250px">
+						{{#each followersList}}
+						<div class="row foll">
+							<a href="{{pathForUser}}" onclick="$('#followersModal').modal('toggle');"><img src="{{profile.picture}}" class="profPic"/> <span> {{profile.name}} </span> </a>		
+						</div>
+						{{/each}}
+					</div> 
+					<div class="modal-footer">
+						<button type="button" class="cbtn cbtn-action btn-block" data-dismiss="modal">Close</button>
+					</div> 
+				</div> 
+			</div> 
+		</div> 
+		<div class="modal" id="followingModal"> 
+			<div class="modal-dialog modal-sm" style="overflow-y: scroll; max-height:85%;  margin-top: 50px; margin-bottom:50px;"> 
+				<div class="modal-content"> 
+					<div class="modal-header"> 
+						<h3 class="modal-title">Following</h3> 
+					</div> 
+					<div class="modal-body" style="height:250px">
+						{{#each followingList}}
+						<div class="row foll">
+							<a href="{{pathForUser}}" onclick="$('#followingModal').modal('toggle');"><img src="{{profile.picture}}" class="profPic"/><span> {{profile.name}} </span></a>		
+						</div>
+						{{/each}}
+					</div> 
+					<div class="modal-footer">
+						<button type="button" class="cbtn cbtn-action btn-block" data-dismiss="modal">Close</button>
+					</div> 
+				</div> 
+			</div> 
+		</div>
 	</section>
-	{{#if Template.subscriptionsReady}}
-	{{#if hasMorePosts}}
-	<a class="load-more" href="#">Load More</a>
-	{{/if}}
-	{{else}}
-	<div class="loading">{{>loader}}</div>
-	{{/if}}
-</template>
-
-<template name="loader">
-	<div class="sk-circle">
-		<div class="sk-circle1 sk-child"></div>
-		<div class="sk-circle2 sk-child"></div>
-		<div class="sk-circle3 sk-child"></div>
-		<div class="sk-circle4 sk-child"></div>
-		<div class="sk-circle5 sk-child"></div>
-		<div class="sk-circle6 sk-child"></div>
-		<div class="sk-circle7 sk-child"></div>
-		<div class="sk-circle8 sk-child"></div>
-		<div class="sk-circle9 sk-child"></div>
-		<div class="sk-circle10 sk-child"></div>
-		<div class="sk-circle11 sk-child"></div>
-		<div class="sk-circle12 sk-child"></div>
-	</div>
+	{{/with}}
+	{{/with}}
 </template>

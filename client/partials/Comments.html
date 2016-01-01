@@ -1,0 +1,58 @@
+<template name="myComments">
+
+	<div class="comments-box row">
+		<div class="col-md-4 new-comment-area">
+			<h4>{{ take key='title' default='Comments'}}</h4>
+
+			{{#if loginAction}}
+			<div class="alert alert-warning" role="alert">You need to login to {{loginAction}}</div>
+			{{/if}}
+
+			{{> textarea }}
+		</div>
+		<div class="col-md-8">
+			<div class="media-list comments">
+				{{#each comment}}
+				{{> myCommentsSingleComment}}
+				{{/each}}
+			</div>
+
+			{{#if hasMoreComments}}
+			<button type="button" class="cbtn cbtn-black loadmore-action">{{ take key='load-more' default='Load more comments' }}</button>
+			{{/if}}
+		</div>
+	</div>
+
+</template>
+
+<template name="myCommentsSingleComment">
+	<div class="media">
+		<div class="media-body comment">
+			<div class="content">
+				<button class="cbtn {{#if hasLiked}}cbtn-like{{else}}cbtn-black{{/if}} like-action" aria-label="Left Align">
+					<small>{{likesCount}}</small>
+					<i class="fa fa-thumbs-up"></i>
+				</button>
+				{{#if isOwnComment}}
+				<button class="cbtn cbtn-red remove-action" aria-label="Left Align">
+					{{ take key='remove' default='' }}
+					<i class="fa fa-trash"> </i>
+				</button>
+				{{/if}}
+				<a class="media-heading" href="{{pathForUser}}">{{user.displayName}}</a>
+				<span class="comment-content" data-id="{{commentId}}">{{content}}</span>
+			</div>
+		</div>
+	</div>
+</template>
+
+<!-- <template name="myCommentsTextarea">
+	<form class="{{#if reply}}reply-form{{else}}comment-form{{/if}}" role="form" action="">
+		<div class="form-group">
+			<textarea
+			placeholder="{{ take key='placeholder-textarea' default='Join the discussion'}}"
+			class="form-control {{#if reply}}create-reply{{else}}create-comment{{/if}}" rows="2"></textarea>
+		</div>
+		<button type="submit" class="btn btn-danger">{{ take key=addButtonKey default=addButtonText }}</button>
+	</form>
+</template> -->

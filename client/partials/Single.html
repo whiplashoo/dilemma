@@ -1,0 +1,128 @@
+<template name="Single">
+	{{#if Template.subscriptionsReady}}
+	{{#with pair}}
+	<div class="pair row">
+		<div class="pair-header row">
+			<div class="col-md-4">
+				<div class="pair-info">
+					<a class="user-link" href="{{pathForUser}}">
+						<img src="{{ userProfilePic }}" class="profPic"/>
+						<h4 class="username"> {{username}} </h4>
+					</a>
+					<p> {{createdAt}} </p>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<h3 class="question"> {{question}} </h3>
+			</div>
+			<div class="col-md-4">
+				{{#if ownPair}}
+				<button class="delete-pair cbtn cbtn-red" data-toggle="modal" data-target="#deleteModal">
+					<i class="fa fa-trash"></i>
+				</button>
+				{{/if}}
+				<div class="pair-options btn-group">
+					<button type="button" class="cbtn cbtn-black dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i><span class="caret"></span></button>
+					<ul class="dropdown-menu pull-right">
+						<li class="get-direct-link" data-toggle="modal" data-target="#directLinkModal"><a href="">Get Direct Link </a></li>
+						<li><a href="#">Report</a></li>
+					</ul>
+				</div>
+				{{#unless profilePage}}
+				{{#unless ownPair}}
+				{{#if following}}
+				<a class="cbtn cbtn-normal cbtn-red unfollow pull-right"> Unfollow </a>
+				{{else}}
+				<a class="cbtn cbtn-normal cbtn-green follow pull-right"> Follow </a>
+				{{/if}}
+				{{/unless}}
+				{{/unless}}
+			</div>
+		</div>
+		<div class="pair-images row">
+			<div class="col-md-5 left-img-div">
+				<div class="pair-img left-img">
+					<img src="{{urlLeft}}" class="img img-responsive" />
+				</div>
+			</div>
+			<div class="col-md-2">
+				<div class="row">				
+					<h1 class="dilemma-or" >OR </h1>
+				</div>
+				<div class="row social">		
+					{{> Social}}
+				</div>
+			</div>
+			<div class="col-md-5 right-img-div">
+				<div class="pair-img right-img">
+					<img src="{{urlRight}}" class="img img-responsive" />
+				</div>	
+			</div>
+		</div>
+		<div class="pair-votes row">
+			<div class="col-md-5 imgVotes">
+				<a href="{{urlLeft}}" target="_blank" class="cbtn cbtn-normal cbtn-black pull-left">Go to Image</a>
+				<i class="fa fa-thumbs-up faa-vertical {{isLeftVoted}} left-thumb"></i>
+				<p class="votes pull-right">{{ leftVotes}}</p>
+			</div>
+			<div class="col-md-2 bolt">
+				<i class="fa fa-bolt"></i>
+			</div>
+			<div class="col-md-5 imgVotes">
+				<p class="votes pull-left">{{ rightVotes}}</p>
+				<i class="fa fa-thumbs-up faa-vertical {{isRightVoted}} right-thumb"></i>
+				<a href="{{urlRight}}" target="_blank" class="cbtn cbtn-normal cbtn-black pull-right"> Go to Image</a>
+			</div>
+		</div>
+		<div class="pair-votedBy row">
+			<div class="col-md-5">
+				<p class="voters-list"> Voted by: 
+					{{> UnwrapUsers leftVotedBy}} 
+				</p>
+			</div>
+			<div class="col-md-2">
+
+			</div>
+			<div class="col-md-5">
+				<p class="voters-list"> Voted by:  
+					{{> UnwrapUsers rightVotedBy}}
+				</p>	
+			</div>
+		</div>
+		<div class="comment-section">
+			{{> commentsBox id=_id customTemplate="myComments"}}
+		</div>
+	</div>
+	<div class="modal" id="directLinkModal"> 
+		<div class="modal-dialog"> 
+			<div class="modal-content"> 
+				<div class="modal-header"> 
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> 
+					<h4 class="modal-title">Copy Link to this Dilemma</h4>
+				</div> 
+				<div class="modal-body">
+					<textarea class="direct-link-area" readonly></textarea>
+				</div> 
+			</div>
+		</div> 
+	</div> 
+	<div class="modal fade" id="deleteModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title">Delete Dilemma</h3>
+				</div>
+				<div class="modal-body">
+					<h4>Are you sure?</h4>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="cbtn ctbn-normal cbtn-red" id="deleteThePair" data-dismiss="modal">Yes, delete it.</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	{{/with}}
+	{{/if}}
+</template>
+

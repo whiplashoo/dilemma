@@ -1,27 +1,88 @@
 <template name="Dropzone">
-	<div class="row dropzone-cont">
-		<div class="col-md-4">
-			<div id="dropzone-left" class="dropzone">
-				<div class="well well-drop-zone">
-					Drop file(s) here to upload
+	<div class="row dropzone-heading">
+		<button class="cbtn cbtn-normal cbtn-like js-toggle-upload">
+			<i class="fa fa-plus-circle"></i> UPLOAD A NEW DILEMMA 
+		</button>
+	</div>
+	<div class="panel-group" id="accordion" role="tablist">
+		<div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="headingOne">
+				<h4 class="panel-title">
+					<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+						<i class="fa fa-folder-open"></i> Select files from your computer/phone.
+					</a>
+				</h4>
+			</div>
+			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel">
+				<div class="panel-body">
+					<div class="row dropzone-cont-files">
+						<div class="col-md-5">
+							<div class="col-md-6">
+								<span class="step-number no1">1</span> 
+								<h4 class="step-heading">Select first image. </h4>
+								<span class="btn cbtn-action upload-button-wrap"> SELECT
+									<input type="file" accept="image/*" name="" class="upload-button" id="inp1">
+								</span>
+								<p id="inp1label"> </p>
+							</div>
+							<div class="col-md-6">
+								<span class="step-number no2">2</span> 
+								<h4 class="step-heading">Select second image. </h4>
+								<span class="btn cbtn-action upload-button-wrap"> SELECT
+									<input type="file" accept="image/*" name="" class="upload-button" id="inp2">
+								</span>
+								<p id="inp2label"> </p>
+							</div>		
+						</div>
+						<div class="col-md-4">
+							<span class="step-number no3" >3</span>
+							<h4 class="step-heading"> Add your question on the dilemma. </h4>
+							<textarea  class="form-control" id="questionInputFiles" rows="3" cols="50" placeholder="Your question here.."></textarea>
+						</div>
+						<div class="col-md-3">
+							<h4><span class="step-number">4</span></h4>
+							<button class="cbtn cbtn-normal cbtn-blue" id="js-upload-files"><i class="fa fa-cloud-upload"></i> POST NEW DILEMMA </button>
+						</div>
+					</div>
 				</div>
 			</div>
-			<span class="btn btn-info upload-button-wrap"> Upload first image...
-				<input type="file" name="" class="upload-button" id="inp1">
-			</span>
 		</div>
-		<div class="col-md-4">
-			<button class="btn btn-info" id="upload"> Upload </button>
-		</div>
-		<div class="col-md-4">
-			<div id="dropzone-right" class="dropzone">
-				<div class="well well-drop-zone">
-					Drop file(s) here to upload
+		<div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="headingTwo">
+				<h4 class="panel-title">
+					<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+						<i class="fa fa-globe"></i> Enter image URLs.
+					</a>
+				</h4>
+			</div>
+			<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel">
+				<div class="panel-body">
+					<div class="row dropzone-cont-urls">
+						<div class="col-md-6">
+							<div class="col-md-6">
+								<span class="step-number no1">1</span> 
+								<h4 class="step-heading">Enter first image URL. </h4>
+								<input type="text" id="url1"> 
+							</div>
+							<div class="col-md-6">
+								<span class="step-number no2">2</span> 
+								<h4 class="step-heading">Enter second image URL. </h4>
+								<input type="text" id="url2"> 
+							</div>		
+						</div>
+						<div class="col-md-3">
+							<span class="step-number no3" >3</span>
+							<h4 class="step-heading"> Add your question on the dilemma. </h4>
+							<textarea class="form-control" id="questionInputUrls" rows="3" cols="40" placeholder="Your question here.."></textarea>
+						</div>
+						<div class="col-md-3">
+							<h4><span class="step-number">4</span></h4>
+							<button class="cbtn cbtn-normal cbtn-blue" id="js-upload-urls"><i class="fa fa-cloud-upload"></i> POST NEW DILEMMA </button>
+						</div>
+					</div>
 				</div>
 			</div>
-			<span class="btn btn-info upload-button-wrap"> Upload second image...
-				<input type="file" name="" class="upload-button" id="inp2">
-			</span>
 		</div>
 	</div>
+	
 </template>

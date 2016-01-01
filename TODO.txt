@@ -1,0 +1,6 @@
+// check if email is sent from contact/report-bug form
+// pair options button - share - report 
+// new ways of uploading - camera - text only
+// clean notifs after 2days on meteor startup?
+// hot tab on feed page, more votes in last 2 days? something like that
+// hashtags or publish only to groups?

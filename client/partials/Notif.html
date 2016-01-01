@@ -1,0 +1,72 @@
+<template name="Notif">
+	{{#unless read}}
+	{{#if typeIs "vote"}}
+	<li class="notif"> 
+		<a href="{{pathForPair}}">
+			<span>
+				<i class="fa fa-thumbs-up"> </i> 
+				<span>{{> UnwrapUsers from}} 
+					voted on a	Dilemma you posted.</span>
+					<span class="notif-created-at"> {{updatedAt}}</span>
+				</span>
+			</a>
+		</li>
+		{{/if}}
+		{{#if typeIs "follow"}}
+		<li class="notif"> 
+			<a href="{{pathForUser}}">
+				<span>
+					<i class="fa fa-user-plus"></i>
+					{{from}}
+					<span> started following you. </span>
+					<span class="notif-created-at"> {{updatedAt}}</span>
+				</span>
+			</a>
+		</li>
+		{{/if}}	
+		{{#if typeIs "comment"}}
+		<li class="notif"> 
+			<a href="{{pathForPair}}">
+			<span>
+				<i class="fa fa-comment"></i> 
+				<span>{{> UnwrapUsers from}} 
+					commented on a	Dilemma you posted.</span>
+					<span class="notif-created-at"> {{updatedAt}}</span>
+				</span>
+			</a>
+		</li>
+		{{/if}}	
+
+		{{else}}
+
+		{{#if typeIs "vote"}}
+		<li class="notif past-notif"> 
+			<span>
+				<i class="fa fa-thumbs-up"> </i> 
+				<span>{{> UnwrapUsers from}} voted on a <a href="{{pathForPair}}">Dilemma</a> you posted.</span>
+				<span class="notif-created-at"> {{updatedAt}}</span>
+			</span>
+		</li>
+		{{/if}}
+		{{#if typeIs "follow"}}
+		<li class="notif past-notif"> 
+			<span>
+				<i class="fa fa-user-plus"></i>
+				<a href="{{pathForUser}}"> {{from}} </a>
+				<span> started following you. </span>
+				<span class="notif-created-at"> {{updatedAt}}</span>
+			</span>
+		</li>
+		{{/if}}	
+		{{#if typeIs "comment"}}
+		<li class="notif past-notif"> 
+			<span>
+				<i class="fa fa-comment"></i> 
+				<span>{{> UnwrapUsers from}} commented on a <a href="{{pathForPair}}">Dilemma</a> you posted.</span>
+				<span class="notif-created-at"> {{updatedAt}}</span>
+			</span>
+		</li>
+		{{/if}}
+
+		{{/unless}}
+	</template>

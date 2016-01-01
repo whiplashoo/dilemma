@@ -1,0 +1,21 @@
+<template name="UnwrapUsers">
+
+	{{#unless hasMoreUsers}}
+	{{#each reverse}}
+	<a class="voter" href="{{pathForUser this}}"> {{this}} </a> 
+	{{/each}}
+	{{else}}
+	{{#each first}}
+	<a class="voter" href="{{pathForUser this}}"> {{this}} </a> 
+	{{/each}}
+	{{#if wrapped}}
+	<span> and </span>
+	<a class="more-users"> {{restcount}} others </a>
+	{{else}}
+	{{#each rest}}
+	<a class="voter" href="{{pathForUser this}}"> {{this}} </a> 
+	{{/each}}
+	{{/if}}
+	{{/unless}}
+
+</template>

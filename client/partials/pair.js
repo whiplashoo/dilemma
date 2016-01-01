@@ -2,7 +2,60 @@ function voteImage(which, pairId) {
 	Meteor.call('voteImage',which, pairId);
 }
 
-Template.Pair.helpers({
+/* Start-up
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+Template.Single.created = function() {
+	var self = this;
+	self.autorun(function() {
+		var pairId = FlowRouter.getParam('pairId');
+		self.subscribe('singlePair', pairId);
+		self.subscribe('onlyTwoImages', pairId);
+	});
+};
+
+Template.Pair.rendered = function() {
+	$('#directLinkModal').on('shown.bs.modal', function () {
+		$('#directLinkModal .direct-link-area').focus();
+	});
+	Meteor.setTimeout(function(){
+		$('.left-img>img').each(function() {
+			var rightH = $(this).parent().parent().siblings().find('.right-img>img').height();
+			var leftH = $(this).height();
+			if ( leftH > rightH){
+				$(this).parent().parent().siblings().find('.right-img').height( leftH );
+			}
+			else {
+				$(this).parent().height(rightH);
+			}
+		});
+	} , 2000);
+	// Change with jQuery the 'Add Comment' button, because the textarea template
+	// from the comments-ui package is not accessible.
+	$('.new-comment-area > form > button').removeClass('btn btn-primary').addClass('cbtn cbtn-normal cbtn-black');
+};
+Template.Single.rendered = function() {
+	$('#directLinkModal').on('shown.bs.modal', function () {
+		$('#directLinkModal .direct-link-area').focus();
+	});
+	Meteor.setTimeout(function(){
+		$('.left-img>img').each(function() {
+			var rightH = $(this).parent().parent().siblings().find('.right-img>img').height();
+			var leftH = $(this).height();
+			if ( leftH > rightH){
+				$(this).parent().parent().siblings().find('.right-img').height( leftH );
+			}
+			else {
+				$(this).parent().height(rightH);
+			}
+		});
+	} , 2000);
+	// Change with jQuery the 'Add Comment' button, because the textarea template
+	// from the comments-ui package is not accessible.
+	$('.new-comment-area > form > button').removeClass('btn btn-primary').addClass('cbtn cbtn-action');
+};
+/* Helpers
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+var pairHelpers = {
 	createdAt: function() {
 		return moment(this.createdAt).fromNow();
 	},
@@ -10,19 +63,27 @@ Template.Pair.helpers({
 		if (Meteor.user())
 			return this.userId === Meteor.userId();
 	},
+	profilePage: function() {
+		var page = FlowRouter.getRouteName();
+		return page === 'userPage';
+	},
 	pathForUser: function() {
 		var pair = this;
 		var params = {  username : pair.username };
 		var routeName = "userPage";
 		var path = FlowRouter.path(routeName, params);
-
 		return path;
 	},
 	pathForVoter: function(voterUsername) {
 		var params = {  username : voterUsername};
 		var routeName = "userPage";
 		var path = FlowRouter.path(routeName, params);
-
+		return path;
+	},
+	pathForPair: function() {
+		var params = {  pairId : this._id};
+		var routeName = "singleDilemma";
+		var path = FlowRouter.path(routeName, params);
 		return path;
 	},
 	urlLeft: function() {
@@ -36,7 +97,7 @@ Template.Pair.helpers({
 			return img.url();
 	},
 	isLeftVoted: function() {
-		if (Meteor.user().profile)
+		if (Meteor.user())
 			var username = Meteor.user().profile.name;
 		if (Pairs.findOne({_id: this._id}).leftVotedBy.indexOf(username) !== -1){
 			return 'animated';
@@ -44,7 +105,7 @@ Template.Pair.helpers({
 		return;
 	},
 	isRightVoted: function() {
-		if (Meteor.user().profile)
+		if (Meteor.user())
 			var username = Meteor.user().profile.name;
 		if (Pairs.findOne({_id: this._id}).rightVotedBy.indexOf(username) !== -1){
 			return 'animated';
@@ -52,33 +113,54 @@ Template.Pair.helpers({
 		return;
 	},
 	following: function() {
-		if (Meteor.user().profile) {
+		if (Meteor.user()) {
 			return Meteor.user().profile.following.indexOf(this.userId) !== -1;		
 		}
 
 	}
+};
+
+Template.Pair.helpers(pairHelpers);
+Template.Single.helpers(pairHelpers);
+
+Template.Single.helpers({
+	pair: function() {
+		return Pairs.findOne();
+	}
 });
 
-Template.Pair.events({
+Template.Social.helpers({
+	currentURL: function() {
+		return 'http://localhost:3000/' + FlowRouter.current().path;
+	}
+})
+
+/* Events
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+var pairEvents = {
 	'click .delete-pair': function(e) {
 		e.preventDefault();
-
-		var sure = confirm('Are you sure you want to delete this dilemma?');
-		if (sure === true) {
-			Pairs.remove({ _id:this._id }, function(error,result) {
-				if (error) {
-					toastr.error("Delete failed... " + error);
-				} else {
-					toastr.success('Dilemma deleted!');
-				}
-			})
-		}
+		Session.set('selectedPair', this._id);
+	},
+	'click #deleteThePair': function(){
+		var pairId = Session.get('selectedPair');
+		Meteor.call('deletePair', pairId, function(error,result){
+			if (error) {
+				toastr.error("Something went wrong..." + error);
+			}
+			else {
+				toastr.success('Deleted!');
+			}
+		});
 	},
 	'dblclick .left-img, click .left-thumb': function(e) {
-		voteImage('left', this._id);
+		if (Meteor.user()){
+			voteImage('left', this._id);
+		}
 	},
 	'dblclick .right-img, click .right-thumb': function(e) {
-		voteImage('right', this._id);
+		if (Meteor.user())
+			voteImage('right', this._id);
 	},
 	'click .follow': function(e) {
 		var pairToFollow = this._id;
@@ -103,5 +185,15 @@ Template.Pair.events({
 				toastr.success('Unfollowed!');
 			}
 		});
+	},
+	'click .get-direct-link': function(e,instance){
+		var pairId = this._id;
+		var link = "http://localhost:3000/dilemmas/" + pairId;
+		$('#directLinkModal .direct-link-area').html(link);
+		$('#directLinkModal .direct-link-area').focus().select();
 	}
-});
+}
+
+Template.Pair.events(pairEvents);
+Template.Single.events(pairEvents);
+

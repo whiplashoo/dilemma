@@ -4,54 +4,45 @@ Accounts.ui.config({
 
 // On the Client
 Comments.ui.config({
-   template: 'bootstrap' // or ionic, semantic-ui
+	limit: 5,
+	loadMoreCount: 5, 
+	template: 'bootstrap'
 });
 
 // We subscribe initially here for the profile pics, but when a user updates
 // we need to check the subscription again. Check the update profile pic function.
 // TODO: Make this reactive somehow.
-Meteor.subscribe('profilePics');
+// Meteor.subscribe('profilePics');
 
 Template.registerHelper("profPic", function() {
 	if (Meteor.user()){
 		var userProfile = Meteor.user().profile;
 		// If user has logged in natively.
-		if (userProfile.pictureById) { 
+		if (userProfile.pictureById && !userProfile.picture) { 
 			var imgId = userProfile.pictureById;
-			var img = ProfilePics.findOne({ _id: imgId });
-			if (img)
-				return img.url();
+			Meteor.call('setNormallyProfPic', imgId);
 		}
-		// if user logged in with external services.
-		else {
-			return userProfile.picture;
-		}
+		return userProfile.picture;
+
 	}
 });
 
-Template._loginButtonsLoggedInDropdown.events({
-	'change #set-profile-picture': function(event, template) {
-		FS.Utility.eachFile(event, function(file) {
-			var newFile = new FS.File(file);
-			var img = ProfilePics.insert(newFile, function (error, fileObj) {
-				if (error) {
-					toastr.error("Upload of profile picture failed... please try again.");
-				} else {
-					toastr.success('Profile picture updated!');
-				}
-			});
+Meteor.Spinner.options = {
+    lines: 9, // The number of lines to draw
+    length: 8, // The length of each line
+    width: 8, // The line thickness
+    radius: 10, // The radius of the inner circle
+    corners: 1, // Corner roundness (0..1)
+    rotate: 0, // The rotation offset
+    direction: 1, // 1: clockwise, -1: counterclockwise
+    color: '#000', // #rgb or #rrggbb
+    speed: 1, // Rounds per second
+    trail: 41, // Afterglow percentage
+    shadow: true, // Whether to render a shadow
+    hwaccel: false, // Whether to use hardware acceleration
+    className: 'spinner', // The CSS class to assign to the spinner
+    zIndex: 2e9, // The z-index (defaults to 2000000000)
+    top: 'auto', // Top position relative to parent in px
+    left: 'auto' // Left position relative to parent in px
+};
 
-			//Store the imgId in user's profile and resubscribe to profilePics.
-			Meteor.call('updateProfilePic', img._id);
-			Meteor.subscribe('profilePics');
-
-		});
-	}
-});
-
-Template._loginButtonsAdditionalLoggedInDropdownActions.helpers({
-	isLoggedInNatively : function() {
-		var userProfile = Meteor.user().profile;
-		return userProfile.picture === undefined;
-	}
-});

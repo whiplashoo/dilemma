@@ -1,0 +1,16 @@
+<template name="PastNotifs">
+	<section class="pastNotifs">
+		<ul class="past-notifications">
+			{{#each notifications}}
+			{{> Notif}}
+			{{/each}}
+			{{#if Template.subscriptionsReady}}
+			{{#if hasMoreNotifs}}
+			<li class="js-load-more notif" >Load More</li>
+			{{/if}}
+			{{else}}
+			<li class="loading">{{>spinner}}</li>
+			{{/if}}	
+		</ul>
+	</section>
+</template>

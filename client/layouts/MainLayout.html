@@ -5,6 +5,8 @@
 	<main class="main-layout container">
 		{{#if currentUser}}
 		{{> Dropzone}}
+		{{else}}
+		<div class="row please-log-in"> Sign up or log in to post a new dilemma.</div>
 		{{/if}}
 		{{> Template.dynamic template=main}}
 	</main>
